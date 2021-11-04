@@ -1,0 +1,15 @@
+<form (ngSubmit)="onSubmit(model)" #heroForm="ngForm">
+    index: {{idx}}
+    id: {{model.id}}<br />
+    date: {{model.date}}
+    start am: <input type="time" [(ngModel)]="model.startAm" name="startAm"/>
+    end am:  <input type="time"  [(ngModel)]="model.endAm" name="endAm"/>
+    start pm: <input type="time" [(ngModel)]="model.startPm" name="startPm"/>
+    end pm: <input type="time"   [(ngModel)]="model.endPm" name="endPm"/>
+
+    {{calc()}}
+    <br />
+    notes:  <input type="text"   [(ngModel)]="model.notes" name="notes"/>
+    <br />
+    <input type="submit"  />
+</form>

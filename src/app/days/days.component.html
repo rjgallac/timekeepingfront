@@ -1,0 +1,4 @@
+<p>days works!</p>
+<app-day *ngFor="let day of (days$()|async); let idx = index" [day]="day" [idx]="idx"></app-day>
+
+TOTAL: {{(getTotal())|async}}
