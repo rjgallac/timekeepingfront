@@ -12,8 +12,7 @@ export class DaysService {
 
   private daysSubject = new BehaviorSubject<Day[]>([]);
 
-  private totals: number[] = [];
-  private totalsSubject = new BehaviorSubject<number[]>([]);
+  private totalsSubject = new BehaviorSubject<number>(0);
 
   public getDays$(): Observable<Day[]>{
     return this.daysSubject.asObservable();
@@ -23,15 +22,10 @@ export class DaysService {
     return this.totalsSubject.asObservable();
   }
 
-  public addHrsToTotals(hrs: number, idx: number){
-    this.totals[idx] = hrs;
-    this.totalsSubject.next(this.totals);
-
-  }
-
   public getDays(){
     this.http.get<Day[]>("http://127.0.0.1:8080/day/?startDate=" + new Date().toISOString().split("T")[0]).subscribe(data =>{
       this.daysSubject.next(data);
+      this.getTotal(data);
     });
   }
 
@@ -61,6 +55,7 @@ export class DaysService {
     d.endAm = day.endAm;
     d.startPm = day.startPm;
     d.endPm = day.endPm;
+    this.getTotal(days);
     this.daysSubject.next(this.daysSubject.getValue())
   }
 
@@ -82,13 +77,13 @@ export class DaysService {
     return  diffAM + diffPM;
   }
 
-  public getTotal(days: Day[]): number {
-    console.log("HERE")
+  public getTotal(days: Day[]) {
     let total = 0;
     for(let i=0;i<=days.length+1;i++){
       total += this.calcDiffInHrs(days[i])
     }    
-    return total;
+    this.totalsSubject.next(total);
+
   }
 
 }
