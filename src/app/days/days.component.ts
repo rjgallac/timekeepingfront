@@ -18,20 +18,12 @@ export class DaysComponent implements OnInit {
   ngOnInit(): void {
       this.daysService.getDays();
       this.daysService.getDays$().subscribe( (data: Day[]) => {
-        this.getTotal(data)
+        this.total = this.daysService.getTotal(data)
       })
   }
 
   public days$(){
     return this.daysService.getDays$();
-  }
-
-  public getTotal(days: Day[]) {
-    this.total = 0;
-    for(let i=0;i<=days.length+1;i++){
-      this.total += this.daysService.calcDiffInHrs(days[i])
-    }    
-    return this.total;
   }
 
   public getMonday(){
