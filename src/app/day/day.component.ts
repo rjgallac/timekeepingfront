@@ -30,9 +30,8 @@ export class DayComponent implements OnInit {
     this.model.startPm = val.startPm;
     this.model.endPm = val.endPm;
     this.model.notes = val.notes;
-    this.diff = this.calcDiffInHrs(val);
+    this.diff = this.daysService.calcDiffInHrs(val);
   }
-
 
   constructor(private daysService: DaysService) { }
 
@@ -40,7 +39,6 @@ export class DayComponent implements OnInit {
   }
 
   public onSubmit(day: Day) { 
-    console.log(this.day); 
     if(day.id == ""){
       this.daysService.add(day).subscribe();
     } else {
@@ -48,24 +46,9 @@ export class DayComponent implements OnInit {
     }
   }
 
- 
-  public calcDiffInHrs(model: Day): number {
-    let d1 = new Date(this.convertTimeToDate(model.startAm));
-    let d2 = new Date(this.convertTimeToDate(model.endAm));
-    let d3 = new Date(this.convertTimeToDate(model.startPm));
-    let d4 = new Date(this.convertTimeToDate(model.endPm));
-    let diffAM = (d2.getTime() - d1.getTime()) /1000 /60 /60;
-    let diffPM = (d4.getTime() - d3.getTime()) /1000 /60 /60
-    return  diffAM + diffPM;
-  }
-
-  public convertTimeToDate(time: Date): Date {
-    return new Date('2020-04-10T'+ time +'Z');
-  }
-
   updateDay(){
     this.daysService.updateDay(this.model);
-    this.diff = this.calcDiffInHrs(this.model);
+    this.diff = this.daysService.calcDiffInHrs(this.model);
   }
  
 }

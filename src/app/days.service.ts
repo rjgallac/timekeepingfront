@@ -49,23 +49,18 @@ export class DaysService {
 
   public diff(model: Day, index: number): number{
     if(model && model.startAm){
-      let hrsDiff = this.calcDiffInHrs(model);
-      // let total = this.diffs.reduce((p, c) => p + c, 0)
-
-      return hrsDiff;
+      return this.calcDiffInHrs(model);
     }
     return 0;
   }
 
   public updateDay(day: Day){
-    console.log(day);
     let days = this.daysSubject.getValue();
     let d = days.filter(d => d.date == day.date)[0]
     d.startAm = day.startAm;
     d.endAm = day.endAm;
     d.startPm = day.startPm;
     d.endPm = day.endPm;
-    console.log(d);
     this.daysSubject.next(this.daysSubject.getValue())
   }
 
@@ -75,6 +70,9 @@ export class DaysService {
   }
 
   public calcDiffInHrs(model: Day): number {
+    if(!model || !model.startAm){
+      return 0;
+    }
     let d1 = new Date(this.convertTimeToDate(model.startAm));
     let d2 = new Date(this.convertTimeToDate(model.endAm));
     let d3 = new Date(this.convertTimeToDate(model.startPm));
@@ -82,6 +80,15 @@ export class DaysService {
     let diffAM = (d2.getTime() - d1.getTime()) /1000 /60 /60;
     let diffPM = (d4.getTime() - d3.getTime()) /1000 /60 /60
     return  diffAM + diffPM;
+  }
+
+  public getTotal(days: Day[]): number {
+    console.log("HERE")
+    let total = 0;
+    for(let i=0;i<=days.length+1;i++){
+      total += this.calcDiffInHrs(days[i])
+    }    
+    return total;
   }
 
 }
