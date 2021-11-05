@@ -21,6 +21,7 @@ export class DayComponent implements OnInit {
 
   @Input() idx: number = 0;
 
+  public diff: number = 0;
   @Input() set day(val: Day){
     this.model.id = val.id;
     this.model.date = val.date;
@@ -29,15 +30,13 @@ export class DayComponent implements OnInit {
     this.model.startPm = val.startPm;
     this.model.endPm = val.endPm;
     this.model.notes = val.notes;
+    this.diff = this.calcDiffInHrs(val);
   }
+
 
   constructor(private daysService: DaysService) { }
 
   ngOnInit(): void {
-  }
-
-  public calc() {
-    return this.daysService.diff(this.model, this.idx);
   }
 
   public onSubmit(day: Day) { 
@@ -47,6 +46,26 @@ export class DayComponent implements OnInit {
     } else {
       this.daysService.update(day, day.id).subscribe();
     }
+  }
+
+ 
+  public calcDiffInHrs(model: Day): number {
+    let d1 = new Date(this.convertTimeToDate(model.startAm));
+    let d2 = new Date(this.convertTimeToDate(model.endAm));
+    let d3 = new Date(this.convertTimeToDate(model.startPm));
+    let d4 = new Date(this.convertTimeToDate(model.endPm));
+    let diffAM = (d2.getTime() - d1.getTime()) /1000 /60 /60;
+    let diffPM = (d4.getTime() - d3.getTime()) /1000 /60 /60
+    return  diffAM + diffPM;
+  }
+
+  public convertTimeToDate(time: Date): Date {
+    return new Date('2020-04-10T'+ time +'Z');
+  }
+
+  updateDay(){
+    this.daysService.updateDay(this.model);
+    this.diff = this.calcDiffInHrs(this.model);
   }
  
 }

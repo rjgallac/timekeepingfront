@@ -9,16 +9,24 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class DaysService {
 
   constructor(private http: HttpClient) { }
+
   private daysSubject = new BehaviorSubject<Day[]>([]);
-  private totalSubject = new BehaviorSubject<number>(0);
+
+  private totals: number[] = [];
+  private totalsSubject = new BehaviorSubject<number[]>([]);
+
   public getDays$(): Observable<Day[]>{
     return this.daysSubject.asObservable();
   }
-  private diffs:number[] =[]
 
+  public getTotals$(){
+    return this.totalsSubject.asObservable();
+  }
 
-  public getTotal$(): Observable<number> {
-    return this.totalSubject.asObservable();
+  public addHrsToTotals(hrs: number, idx: number){
+    this.totals[idx] = hrs;
+    this.totalsSubject.next(this.totals);
+
   }
 
   public getDays(){
@@ -42,14 +50,24 @@ export class DaysService {
   public diff(model: Day, index: number): number{
     if(model && model.startAm){
       let hrsDiff = this.calcDiffInHrs(model);
-      this.diffs[index] = hrsDiff;
-      let total = this.diffs.reduce((p, c) => p + c, 0)
-        // this.totalSubject.next(total);
+      // let total = this.diffs.reduce((p, c) => p + c, 0)
+
       return hrsDiff;
     }
     return 0;
   }
 
+  public updateDay(day: Day){
+    console.log(day);
+    let days = this.daysSubject.getValue();
+    let d = days.filter(d => d.date == day.date)[0]
+    d.startAm = day.startAm;
+    d.endAm = day.endAm;
+    d.startPm = day.startPm;
+    d.endPm = day.endPm;
+    console.log(d);
+    this.daysSubject.next(this.daysSubject.getValue())
+  }
 
 
   public convertTimeToDate(time: Date): Date {

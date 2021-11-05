@@ -2,14 +2,14 @@
     index: {{idx}}
     id: {{model.id}}<br />
     date: {{model.date}}
-    start am: <input type="time" [(ngModel)]="model.startAm" name="startAm"/>
-    end am:  <input type="time"  [(ngModel)]="model.endAm" name="endAm"/>
-    start pm: <input type="time" [(ngModel)]="model.startPm" name="startPm"/>
-    end pm: <input type="time"   [(ngModel)]="model.endPm" name="endPm"/>
+    start am: <input type="time" [(ngModel)]="model.startAm" name="startAm" (change)="updateDay()"/>
+    end am:  <input type="time"  [(ngModel)]="model.endAm" name="endAm" (change)="updateDay()"/>
+    start pm: <input type="time" [(ngModel)]="model.startPm" name="startPm" (change)="updateDay()"/>
+    end pm: <input type="time"   [(ngModel)]="model.endPm" name="endPm" (change)="updateDay()"/>
 
-    {{calc()}}
+    {{diff}}
     <br />
-    notes:  <input type="text"   [(ngModel)]="model.notes" name="notes"/>
+    notes:  <input type="text"   [(ngModel)]="model.notes" name="notes" (change)="updateDay()"/>
     <br />
     <input type="submit"  />
 </form>
