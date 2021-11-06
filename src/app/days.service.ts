@@ -11,7 +11,7 @@ export class DaysService {
 
   constructor(private http: HttpClient) { }
 
-  private weekSubject = new BehaviorSubject<Week>({days:[], weekTotal:0});
+  private weekSubject = new BehaviorSubject<Week>({days:[], weekTotal:0, monthTotal: 0, monthTotalExcludingWeek: 0, yearTotal: 0, yearTotalExcludingWeek: 0});
 
   private totalsSubject = new BehaviorSubject<number>(0);
 
