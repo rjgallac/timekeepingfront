@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Day } from './Day';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Week } from './Week';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,12 @@ export class DaysService {
 
   constructor(private http: HttpClient) { }
 
-  private daysSubject = new BehaviorSubject<Day[]>([]);
+  private weekSubject = new BehaviorSubject<Week>({days:[], weekTotal:0});
 
   private totalsSubject = new BehaviorSubject<number>(0);
 
-  public getDays$(): Observable<Day[]>{
-    return this.daysSubject.asObservable();
+  public getDays$(): Observable<Week>{
+    return this.weekSubject.asObservable();
   }
 
   public getTotals$(){
@@ -23,9 +24,10 @@ export class DaysService {
   }
 
   public getDays(){
-    this.http.get<Day[]>("http://127.0.0.1:8080/day/?startDate=" + new Date().toISOString().split("T")[0]).subscribe(data =>{
-      this.daysSubject.next(data);
-      this.getTotal(data);
+    this.http.get<Week>("http://127.0.0.1:8080/week/?startDate=" + new Date().toISOString().split("T")[0]).subscribe(data =>{
+      this.weekSubject.next(data);
+      console.log(data)
+      this.totalsSubject.next(data.weekTotal);
     });
   }
 
@@ -49,14 +51,15 @@ export class DaysService {
   }
 
   public updateDay(day: Day){
-    let days = this.daysSubject.getValue();
-    let d = days.filter(d => d.date == day.date)[0]
+    let week = this.weekSubject.getValue();
+    let d = week?.days.filter(d => d.date == day.date)[0]
     d.startAm = day.startAm;
     d.endAm = day.endAm;
     d.startPm = day.startPm;
     d.endPm = day.endPm;
-    this.getTotal(days);
-    this.daysSubject.next(this.daysSubject.getValue())
+    this.getTotal(week?.days);
+    this.weekSubject.next(this.weekSubject.getValue())
+   
   }
 
 
