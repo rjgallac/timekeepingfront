@@ -13,7 +13,7 @@
     <br />
     notes:  <input type="text"   [(ngModel)]="model.notes" name="notes" (change)="updateDay()"/>
     <br />
-    <input type="submit"  />
+    <input class="btn btn-primary" type="submit"  />
 </form>
 
-<button (click)="deleteDay(model.id)">delete</button>
+<button type="button" class="btn btn-primary" (click)="deleteDay(model.id)">delete</button>
