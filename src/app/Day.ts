@@ -1,3 +1,5 @@
+import { SummaryDto } from "./SummaryDto";
+
 export interface Day{
     id: string;
     date: Date;
@@ -6,4 +8,5 @@ export interface Day{
     startPm: Date;
     endPm: Date;
     notes: String;
+    summaryDto?: SummaryDto;
 }

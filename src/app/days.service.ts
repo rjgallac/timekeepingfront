@@ -11,35 +11,49 @@ export class DaysService {
 
   constructor(private http: HttpClient) { }
 
-  private weekSubject = new BehaviorSubject<Week>({days:[], weekTotal:0, monthTotal: 0, monthTotalExcludingWeek: 0, yearTotal: 0, yearTotalExcludingWeek: 0});
+  private daysSubject = new BehaviorSubject<Day>({'id': '', 'date': new Date(), 'startAm': new Date(), 'endAm': new Date(), 'startPm': new Date(), 'endPm': new Date(),notes: '' });
+
+  private dateSubject = new BehaviorSubject<Date>(new Date());
 
   private totalsSubject = new BehaviorSubject<number>(0);
 
-  public getDays$(): Observable<Week>{
-    return this.weekSubject.asObservable();
+  public getDays$(): Observable<Day>{
+    return this.daysSubject.asObservable();
   }
 
   public getTotals$(){
     return this.totalsSubject.asObservable();
   }
+  public getDate$(){
+    return this.dateSubject.asObservable();
+  }
+  public updateDate(val: Date){
+    this.dateSubject.next(val);
+    this.getDays();
+  }
+
+  public updateDay(val: Day){
+    this.daysSubject.next(val)
+  }
 
   public getDays(){
-    this.http.get<Week>("http://127.0.0.1:8080/week/?startDate=" + new Date().toISOString().split("T")[0]).subscribe(data =>{
-      this.weekSubject.next(data);
-      console.log(data)
-      this.totalsSubject.next(data.weekTotal);
+    let today = this.dateSubject.value.toISOString().split("T")[0];
+    // let today = "2021-11-05"
+    this.http.get<Day>("http://127.0.0.1:8080/day/?startDate=" + today).subscribe(data =>{
+      this.daysSubject.next(data);
+      // this.totalsSubject.next(data.weekTotal);
     });
   }
 
   public deleteDay(id: String){
-    return this.http.delete("http://127.0.0.1:8080/day/" + id)
+    return this.http.delete<Day>("http://127.0.0.1:8080/day/" + id)
   }
 
   public add(model: Day){
-    return this.http.post("http://127.0.0.1:8080/day", model);
+    return this.http.post<Day>("http://127.0.0.1:8080/day", model);
   }
   public update(model: Day, id: string){
-    return this.http.put("http://127.0.0.1:8080/day/" + id, model);
+    return this.http.put<Day>("http://127.0.0.1:8080/day/" + id, model);
   }
 
 
@@ -49,19 +63,6 @@ export class DaysService {
     }
     return 0;
   }
-
-  public updateDay(day: Day){
-    let week = this.weekSubject.getValue();
-    let d = week?.days.filter(d => d.date == day.date)[0]
-    d.startAm = day.startAm;
-    d.endAm = day.endAm;
-    d.startPm = day.startPm;
-    d.endPm = day.endPm;
-    this.getTotal(week?.days);
-    this.weekSubject.next(this.weekSubject.getValue())
-   
-  }
-
 
   public convertTimeToDate(time: Date): Date {
     return new Date('2020-04-10T'+ time +'Z');

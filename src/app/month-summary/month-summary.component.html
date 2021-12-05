@@ -1,0 +1,7 @@
+
+<ul>
+    <li [style.color]="month.value.actual - month.value.expected >=0  ? 'green' : 'red'" *ngFor="let month of months | keyvalue:unsorted"> 
+        <span class="month">{{month.value.mth}}</span>
+        <span>{{month.value.actual}}({{month.value.actual - month.value.expected}})</span>
+    </li>
+</ul>

@@ -7,14 +7,18 @@ import { DaysComponent } from './days/days.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { DayComponent } from './day/day.component'; 
+import { DayComponent } from './day/day.component';
+import { WeekSummaryComponent } from './week-summary/week-summary.component';
+import { MonthSummaryComponent } from './month-summary/month-summary.component'; 
 
 
 @NgModule({
   declarations: [
     AppComponent,
     DaysComponent,
-    DayComponent
+    DayComponent,
+    WeekSummaryComponent,
+    MonthSummaryComponent
   ],
   imports: [
     BrowserModule,

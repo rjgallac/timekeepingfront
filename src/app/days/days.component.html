@@ -1,15 +1,5 @@
-<button>previous week</button><button>next week</button>
-<div style="width: 300px;float:left;height: 100vh" *ngIf="(days$()|async) as days;">    
-    <div *ngIf="(totals()|async) as total;">
-        <p>year total Expected: {{days.yearTotal}}</p>
-        <p>year total Actual: {{days.yearTotalExcludingWeek + total}}</p>
-        <p>year diff: {{(days.yearTotalExcludingWeek + total) - days.yearTotal}}</p>
-        <p>month Total Expected: {{days.monthTotal }}</p>
-        <p>month Total Actual: {{days.monthTotalExcludingWeek + total}} </p>
-        <p>month diff: {{(days.monthTotalExcludingWeek + total) - days.monthTotal}}</p>
-        <p>week expected: 37.5</p>
-        <p>week total: {{total}}</p>
-        <p>week diff: {{total - 37.5}}</p>
-    </div>
-</div>
-<app-day style="width:700px;" *ngFor="let day of (days$()|async)?.days; let idx = index" [day]="day" [idx]="idx"></app-day>
+<app-week-summary style="width:200px;"></app-week-summary>
+<app-month-summary style="width:300px;float:left"></app-month-summary>
+<button (click)="previous()">previous day</button><button (click)="next()">next day</button>
+
+<app-day></app-day>

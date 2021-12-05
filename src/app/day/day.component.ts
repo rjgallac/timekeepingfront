@@ -19,36 +19,45 @@ export class DayComponent implements OnInit {
     "notes":"",
   }
 
-  @Input() idx: number = 0;
-
   public diff: number = 0;
-  @Input() set day(val: Day){
-    this.model.id = val.id;
-    this.model.date = val.date;
-    this.model.startAm = val.startAm;
-    this.model.endAm = val.endAm;
-    this.model.startPm = val.startPm;
-    this.model.endPm = val.endPm;
-    this.model.notes = val.notes;
-    this.diff = this.daysService.calcDiffInHrs(val);
-  }
 
   constructor(private daysService: DaysService) { }
 
   ngOnInit(): void {
+    this.daysService.getDays$().subscribe( (val:Day) =>{
+      this.model.id = val.id;
+      this.model.date = val.date;
+      this.model.startAm = val.startAm;
+      this.model.endAm = val.endAm;
+      this.model.startPm = val.startPm;
+      this.model.endPm = val.endPm;
+      this.model.notes = val.notes;
+      this.diff = this.daysService.calcDiffInHrs(val);
+    })
   }
 
   public onSubmit(day: Day) { 
     if(day.id == ""){
-      this.daysService.add(day).subscribe();
+      this.daysService.add(day).subscribe((data: Day) =>{
+        this.daysService.updateDay(data);
+
+      });
     } else {
-      this.daysService.update(day, day.id).subscribe();
+      this.daysService.update(day, day.id).subscribe((data: Day) =>{
+        this.daysService.updateDay(data);
+      });
     }
   }
 
   updateDay(){
-    this.daysService.updateDay(this.model);
     this.diff = this.daysService.calcDiffInHrs(this.model);
   }
- 
+  
+  deleteDay(id: String){
+    console.log(id)
+    this.daysService.deleteDay(id).subscribe( (data: Day) =>{
+      this.daysService.updateDay(data);
+
+    });
+  }
 }

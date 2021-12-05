@@ -1,7 +1,9 @@
 <form (ngSubmit)="onSubmit(model)" #heroForm="ngForm">
-    index: {{idx}}
     id: {{model.id}}<br />
-    date: {{model.date}}
+    date: {{model.date}}<br />
+    day: {{model.date|date:'EEEE'}}<br />
+    week of year: {{model.date|date:'w'}}<br />
+
     start am: <input type="time" [(ngModel)]="model.startAm" name="startAm" (change)="updateDay()"/>
     end am:  <input type="time"  [(ngModel)]="model.endAm" name="endAm" (change)="updateDay()"/>
     start pm: <input type="time" [(ngModel)]="model.startPm" name="startPm" (change)="updateDay()"/>
@@ -13,3 +15,5 @@
     <br />
     <input type="submit"  />
 </form>
+
+<button (click)="deleteDay(model.id)">delete</button>

@@ -12,20 +12,29 @@ import { map, filter, tap } from 'rxjs/operators'
 export class DaysComponent implements OnInit {
 
   constructor(private daysService: DaysService) { }
-
+  private date: Date = new Date();
 
   ngOnInit(): void {
       this.daysService.getDays();
+      this.daysService.getDate$().subscribe(data =>{
+        this.date = data;
+      })
   }
 
-  public days$(){
-    return this.daysService.getDays$();
-  }
 
   public totals(){
     return this.daysService.getTotals$();
   }
 
+  public next(){
+    this.date.setDate(this.date.getDate() +1);
+    this.daysService.updateDate(this.date)
+  }
+
+  public previous(){
+    this.date.setDate(this.date.getDate() -1);
+    this.daysService.updateDate(this.date);
+  }
   // public getMonday(){
   //   let today = new Date();
   //   let day = today.getDay();
@@ -34,9 +43,6 @@ export class DaysComponent implements OnInit {
   //   return newDate;
   // }
 
-  deleteDay(id: String){
-    console.log(id)
-    this.daysService.deleteDay(id).subscribe();
-  }
+
 
 }
