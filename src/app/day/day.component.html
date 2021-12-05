@@ -4,14 +4,14 @@
     day: {{model.date|date:'EEEE'}}<br />
     week of year: {{model.date|date:'w'}}<br />
 
-    start am: <input type="time" [(ngModel)]="model.startAm" name="startAm" (change)="updateDay()"/>
-    end am:  <input type="time"  [(ngModel)]="model.endAm" name="endAm" (change)="updateDay()"/>
-    start pm: <input type="time" [(ngModel)]="model.startPm" name="startPm" (change)="updateDay()"/>
-    end pm: <input type="time"   [(ngModel)]="model.endPm" name="endPm" (change)="updateDay()"/>
+    start am: <input type="time" class="form-control" [(ngModel)]="model.startAm" name="startAm" (change)="updateDay()"/>
+    end am:  <input type="time" class="form-control" [(ngModel)]="model.endAm" name="endAm" (change)="updateDay()"/>
+    start pm: <input type="time" class="form-control" [(ngModel)]="model.startPm" name="startPm" (change)="updateDay()"/>
+    end pm: <input type="time" class="form-control" [(ngModel)]="model.endPm" name="endPm" (change)="updateDay()"/>
 
-    {{diff}}
+    DIFF: {{diff}}
     <br />
-    notes:  <input type="text"   [(ngModel)]="model.notes" name="notes" (change)="updateDay()"/>
+    notes:  <input type="text" class="form-control" [(ngModel)]="model.notes" name="notes" (change)="updateDay()"/>
     <br />
     <input class="btn btn-primary" type="submit"  />
 </form>

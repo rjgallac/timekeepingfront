@@ -1,7 +1,13 @@
-<ul>
-    <li [style.background-color]="week.value - 37.5 >=0  ? 'rgb(76, 122, 76)' : 'red'" *ngFor="let week of weeks | keyvalue : unsorted">
-        {{week.key}} <br />
-        {{week.value}} <br />
-        {{week.value - 37.5}}<br />
-    </li>
-</ul>
+<div class="weeks">
+
+    <div class="card" 
+        [style.background-color]="week.value - 37.5 >=0  ? 'rgb(76, 142, 76)' : 'red'" 
+        *ngFor="let week of weeks | keyvalue : unsorted">
+        <div class="card-body">
+            {{week.key}} <br />
+            {{week.value}} <br />
+            {{week.value - 37.5}}
+    
+        </div>
+    </div>
+</div>

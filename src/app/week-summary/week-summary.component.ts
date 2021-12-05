@@ -16,6 +16,7 @@ export class WeekSummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.daysService.getDays$().subscribe( (val:Day) =>{
+      console.log(val)
       if(val.summaryDto){
         this.weeks = val.summaryDto.weekTotals;
       }

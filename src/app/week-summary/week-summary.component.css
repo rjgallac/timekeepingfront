@@ -1,14 +1,10 @@
-ul{
+.weeks{
+    display:flex;
+    flex-wrap: wrap;
     list-style: none;
-    display: flex;
-    padding-left:0;
 }
-li{
-    font-size: 90%;
-    text-align: center;
-    flex-direction: column;
-    border: 1px solid #999;
-    padding: 1px;
-    background-color: rgb(76, 122, 76);
-    color: white;
+
+.card{
+    margin:10px;
+    width:12rem;
 }
