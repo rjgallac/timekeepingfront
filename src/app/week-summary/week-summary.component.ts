@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Day } from '../Day';
 import { DaysService } from '../days.service';
-import { WeekTotals } from '../SummaryDto';
+import { SummaryService } from '../summary.service';
+import { SummaryDto, WeekTotals } from '../SummaryDto';
 
 @Component({
   selector: 'app-week-summary',
@@ -10,17 +11,16 @@ import { WeekTotals } from '../SummaryDto';
 })
 export class WeekSummaryComponent implements OnInit {
 
-  constructor(private daysService: DaysService) { }
+  constructor(private summaryService: SummaryService) { }
 
   weeks: WeekTotals = {};
 
   ngOnInit(): void {
-    this.daysService.getDays$().subscribe( (val:Day) =>{
-      console.log(val)
-      if(val.summaryDto){
-        this.weeks = val.summaryDto.weekTotals;
-      }
+    this.summaryService.getSummaries$().subscribe( (summaryDto:SummaryDto) =>{
+      console.log(summaryDto)
+        this.weeks = summaryDto.weekTotals;
     });
+    this.summaryService.getSummaries();
   }
   unsorted = (a: any, b: any): number => {
     return 0;
